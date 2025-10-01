@@ -2552,9 +2552,11 @@ input, select, textarea {
 	.icon {
 		text-decoration: none;
 		border-bottom: none;
-		position: relative;
+		position: center;
 		text-align: center;
+		color: #161b4b;
 	}
+	
 
 		.icon:before {
 			-moz-osx-font-smoothing: grayscale;
@@ -2565,7 +2567,7 @@ input, select, textarea {
 			text-rendering: auto;
 			line-height: 1;
 			text-transform: none !important;
-			font-family: "Nanum Myeongjo", serif;
+			font-family: "Font Awesome 5 Free";
 			font-weight: 400;
 		}
 
@@ -2582,7 +2584,7 @@ input, select, textarea {
 		}
 
 		.icon.brands:before {
-			font-family: "Nanum Myeongjo", serif;
+			font-family: 'Font Awesome 5 Brands';
 		}
 
 		.icon.style2:before {
@@ -3705,7 +3707,7 @@ input, select, textarea {
 		}
 
 		.banner.style1.fullscreen {
-			min-height: 75vh;
+			min-height: 100vh;
 		}
 
 			@media screen and (orientation: portrait) {
