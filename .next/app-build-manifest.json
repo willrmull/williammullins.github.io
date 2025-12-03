@@ -1,43 +1,20 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-53fb23fe79ea8fee.js",
-      "static/chunks/4bd1b696-2bfa57da125389e3.js",
-      "static/chunks/587-c7f2815ecf19825a.js",
-      "static/chunks/main-app-1ff3200dd0bf8f95.js",
-      "static/chunks/app/_not-found/page-481532f7ba17987b.js"
-    ],
     "/layout": [
-      "static/chunks/webpack-53fb23fe79ea8fee.js",
-      "static/chunks/4bd1b696-2bfa57da125389e3.js",
-      "static/chunks/587-c7f2815ecf19825a.js",
-      "static/chunks/main-app-1ff3200dd0bf8f95.js",
-      "static/css/ca1157f5cf80fddb.css",
-      "static/chunks/app/layout-06a124a64ac1d9a2.js"
-    ],
-    "/blog/evapotranspiration/page": [
-      "static/chunks/webpack-53fb23fe79ea8fee.js",
-      "static/chunks/4bd1b696-2bfa57da125389e3.js",
-      "static/chunks/587-c7f2815ecf19825a.js",
-      "static/chunks/main-app-1ff3200dd0bf8f95.js",
-      "static/chunks/970-d061dc7b7044ba4e.js",
-      "static/chunks/app/blog/evapotranspiration/page-40a4e42f04f87288.js"
-    ],
-    "/blog/page": [
-      "static/chunks/webpack-53fb23fe79ea8fee.js",
-      "static/chunks/4bd1b696-2bfa57da125389e3.js",
-      "static/chunks/587-c7f2815ecf19825a.js",
-      "static/chunks/main-app-1ff3200dd0bf8f95.js",
-      "static/chunks/970-d061dc7b7044ba4e.js",
-      "static/chunks/app/blog/page-4e285008a73e31aa.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
     "/page": [
-      "static/chunks/webpack-53fb23fe79ea8fee.js",
-      "static/chunks/4bd1b696-2bfa57da125389e3.js",
-      "static/chunks/587-c7f2815ecf19825a.js",
-      "static/chunks/main-app-1ff3200dd0bf8f95.js",
-      "static/chunks/970-d061dc7b7044ba4e.js",
-      "static/chunks/app/page-2f783423e6675ca5.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/blog/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/blog/page.js"
     ]
   }
 }
