@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* * Optional: Add any global custom CSS here. 
+*
+* Since you are using the Inter font in your layout.tsx, 
+* we don't need to import it here if Next.js/Google Fonts handles it.
+*
+* The following is an example of a custom utility class 
+* or a base style that is not easily done in Tailwind.
+*/
+:root {
+  /* Backgrounds: Set to F8F9FF (RGB: 248 249 255) based on your request, ignoring alpha for the base variable. */
+  --color-bg-primary: 248 249 255;
+  --color-bg-secondary: 243 244 246; /* Slightly darker light gray for contrast */
+
+  /* Text Colors: Set to 193C62 (RGB: 25 60 98). */
+  --color-text-primary: 25 60 98;
+  --color-text-secondary: 55 65 81; /* Darker gray for secondary text */
+
+  /* Accent Colors (Updated to #544941 (84 73 65) for navigation items/links) */
+  --color-accent-main: 84 73 65; /* New color for links/nav text */
+  --color-accent-hover: 139 123 108; /* Lighter shade of the new color for hover state */
+}
+
+/* Custom animation for the fade-in effect on the hero section */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply the custom animation to elements that use the utility class */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Base body styles, although often set via Tailwind classes in layout.tsx */
+body {
+  /* Ensure smooth scrolling for in-page links (like #about) */
+  scroll-behavior: smooth;
+  /* Prevent horizontal scroll on mobile if layout isn't perfect */
+  overflow-x: hidden;
+}
