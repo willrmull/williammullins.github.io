@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image"; // Added for image optimization
 
 export default function BlogIndex() {
   return (
@@ -18,10 +19,12 @@ export default function BlogIndex() {
             <article className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100">
               <div className="md:flex">
                 <div className="md:w-1/3 bg-gray-200 min-h-[200px] relative">
-                  <img
+                  {/* FIX: Replaced <img> with optimized <Image /> component */}
+                  <Image
                     src="/images/vineyard.jpg"
                     alt="evapotranspiration"
-                    className="w-full h-full object-cover absolute inset-0"
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
                 <div className="p-8 md:w-2/3 flex flex-col justify-center">

@@ -2,7 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
-import { Github, Linkedin, Instagram, Mail } from "lucide-react";
+// The following line imported icons that were not used in this file:
+// import { Github, Linkedin, Instagram, Mail } from "lucide-react";
+// ^ Removed to fix the linting errors.
 
 const inter = IBM_Plex_Sans({ subsets: ["latin"], weight: ["300", "400"] });
 
