@@ -50,9 +50,12 @@ export default function Home() {
           {/* Optional: Add a hero image here if desired, or keep it text-focused like the "Banner" style */}
           <div className="hidden md:block relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl bg-gray-200">
             {/* Placeholder for banner image if you have one, or a stylistic abstract element */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-100 to-blue-100 flex items-center justify-center text-slate-300 font-bold text-4xl">
-              WM
-            </div>
+            <Image
+              src="/images/banner.jpeg"
+              alt="Banner"
+              fill // Use fill since the parent div has fixed dimensions (h-[500px])
+              style={{ objectFit: "cover" }}
+            />
           </div>
         </div>
       </section>
@@ -63,7 +66,7 @@ export default function Home() {
           <div className="order-2 md:order-1 relative h-[500px] w-full rounded-lg overflow-hidden shadow-xl">
             {/* FIX: Replaced <img> with optimized <Image /> component to resolve warning and use the import */}
             <Image
-              src="https://william-mullins.com/images/self.jpeg"
+              src="/images/self.jpeg"
               alt="William Mullins"
               fill // Use fill since the parent div has fixed dimensions (h-[500px])
               style={{ objectFit: "cover" }}

@@ -36,7 +36,7 @@ export default function BlogIndex() {
                       href="/blog/evapotranspiration"
                       className="hover:text-blue-700 transition-colors"
                     >
-                      Forecasting Water Use of Grapes in California
+                      Forecasting Water Use of Wine Grapes in California
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
@@ -69,11 +69,11 @@ export default function BlogIndex() {
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
-                    Examining the scars and social dimensions of the Eaton adn
+                    Examining the scars and social dimensions of the Eaton and
                     Palisades wildfires.
                   </p>
                   <Link
-                    href="/blog/evapotranspiration"
+                    href="/blog/fires"
                     className="inline-flex items-center font-semibold text-purple-600 hover:text-purple-800"
                   >
                     Read Full Post <ArrowRight className="ml-2 w-4 h-4" />
