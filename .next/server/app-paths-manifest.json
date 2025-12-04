@@ -3,6 +3,6 @@
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/blog/evapotranspiration/page": "app/blog/evapotranspiration/page.js",
   "/blog/fires/page": "app/blog/fires/page.js",
-  "/blog/page": "app/blog/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/blog/page": "app/blog/page.js"
 }
