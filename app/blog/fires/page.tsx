@@ -134,18 +134,17 @@ cbar_ax = fig.add_axes([0.25, 0.08, 0.5, 0.02])  # [left, bottom, width, height]
 cbar = fig.colorbar(sm, cax=cbar_ax, orientation='horizontal')
 cbar.set_label('People Over 65 Years Old (Percentile)')
 
-plt.show()`
+plt.show()`,
   ];
 
   return (
     <article className="min-h-screen bg-gray-50 py-20">
       {/* Progress Indicator */}
       <div className="fixed top-0 left-0 w-full h-1 bg-transparent z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-150"
           style={{ width: `${scrollProgress}%` }}
         />
-
       </div>
 
       {/* ------- HERO IMAGE BACKGROUND ------- */}
@@ -216,10 +215,12 @@ plt.show()`
 
             <h3>Introduction</h3>
             <p>
-              On January 7, 2025, two fires broke out nearly simultaneously in the City of Los Angeles. In this blog post,
-              false-color images are made using satellite imagery from the time of the fire
-              to analyze their impact on the areas. In addition, the disparity in age across the area affected by the fire is
-              analyzed to see if there is a demographic disparity among those impacted.
+              On January 7, 2025, two fires broke out nearly simultaneously in
+              the City of Los Angeles. In this blog post, false-color images are
+              made using satellite imagery from the time of the fire to analyze
+              their impact on the areas. In addition, the disparity in age
+              across the area affected by the fire is analyzed to see if there
+              is a demographic disparity among those impacted.
             </p>
 
             {/* Section Divider */}
@@ -280,8 +281,8 @@ plt.show()`
                 Landsat Collection 2 Level-2 Data
               </a>
               <p className="text-sm mt-2">
-                Landsat 8-9 data collected by NASA showing surface reflectance and
-                temperature. The data used in this analysis is a NetCDF
+                Landsat 8-9 data collected by NASA showing surface reflectance
+                and temperature. The data used in this analysis is a NetCDF
                 containing a subset of this data which centers on the area
                 surrounding the two fires.
               </p>
@@ -305,12 +306,16 @@ plt.show()`
 
             <h3>False Color Image</h3>
             <p>
-              False-color images use short-wave and infrared bands of light to penetrate smoke, enabling the analysis of wildfires using satellite imagery. Using this method, the damage done by the Eaton and Palisades fires can be visualized.
+              False-color images use short-wave and infrared bands of light to
+              penetrate smoke, enabling the analysis of wildfires using
+              satellite imagery. Using this method, the damage done by the Eaton
+              and Palisades fires can be visualized.
             </p>
 
             <h4>Read in Landsat Data</h4>
             <p>
-              The NetCDF file containing satellite data is read in using xarray.open_dataset and the geometry data is recovered.
+              The NetCDF file containing satellite data is read in using
+              xarray.open_dataset and the geometry data is recovered.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -373,7 +378,12 @@ plt.show()`
 
             <h4>Fire Perimeter Over False Color Image</h4>
             <p>
-              The perimeters are mapped on top of the false-color images to better show the range of the fire. Through this we can see that both regions have significant scarring, as seen by the red and orange coloring. Additionally, the red coloring on the Palisades indicates that the fire in that area was burning hotter at the time the data was collected.
+              The perimeters are mapped on top of the false-color images to
+              better show the range of the fire. Through this we can see that
+              both regions have significant scarring, as seen by the red and
+              orange coloring. Additionally, the red coloring on the Palisades
+              indicates that the fire in that area was burning hotter at the
+              time the data was collected.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -400,15 +410,16 @@ plt.show()`
 
             <h2>Age Disparity Between Fire Areas</h2>
             <p>
-              In this next section, the difference in the age of those directly affected by the
-              two fires will be examined by displaying the percentile for people over 65 years old
-              within each fire's perimeter.
+              In this next section, the difference in the age of those directly
+              affected by the two fires will be examined by displaying the
+              percentile for people over 65 years old within each fire&apos;s
+              perimeter.
             </p>
 
             <h3>Read In Data</h3>
             <p>
-              The geodatabase is read in and the data is reprojected
-              to match the Landsat data from earlier.
+              The geodatabase is read in and the data is reprojected to match
+              the Landsat data from earlier.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -424,8 +435,8 @@ plt.show()`
 
             <h3>Create Census Raster from Data</h3>
             <p>
-              Two rasters are created by spatially joining the perimeter data from the
-              fires with the census data within them.
+              Two rasters are created by spatially joining the perimeter data
+              from the fires with the census data within them.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -441,8 +452,9 @@ plt.show()`
 
             <h3>Plot Environmental Justice Data</h3>
             <p>
-              The two rasters are plotted next to each other, and it can be seen that the percentile of
-              those over 65 was much higher within the region affected by the Palisades fire.
+              The two rasters are plotted next to each other, and it can be seen
+              that the percentile of those over 65 was much higher within the
+              region affected by the Palisades fire.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -470,36 +482,40 @@ plt.show()`
             <h3>References</h3>
             <p className="text-sm text-gray-600">
               Centers for Disease Control and Prevention and Agency for Toxic
-              Substances and Disease Registry. (2024). Environmental Justice Index for California.
+              Substances and Disease Registry. (2024). Environmental Justice
+              Index for California.
               <a
                 href="https://www.atsdr.cdc.gov/place-health/php/eji/eji-data-download.html "
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline ml-1"
               >
-                https://www.atsdr.cdc.gov/place-health/php/eji/eji-data-download.html 
+                https://www.atsdr.cdc.gov/place-health/php/eji/eji-data-download.html
               </a>
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              Earth Resources Observation and Science (EROS) Center. (2020). Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor Level-2, Collection 2 [dataset]. U.S. Geological Survey.
+              Earth Resources Observation and Science (EROS) Center. (2020).
+              Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor
+              Level-2, Collection 2 [dataset]. U.S. Geological Survey.
               <a
                 href="https://doi.org/10.5066/P9OGBGM6 "
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline ml-1"
               >
-                https://doi.org/10.5066/P9OGBGM6 
+                https://doi.org/10.5066/P9OGBGM6
               </a>
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              Palisades and Eaton Dissolved Fire Perimeters as of 2025/01/21. (2025). ArcGIS REST Services Directory.
+              Palisades and Eaton Dissolved Fire Perimeters as of 2025/01/21.
+              (2025). ArcGIS REST Services Directory.
               <a
                 href="https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Palisades_and_Eaton_Dissolved_Fire_Perimeters_as_of_20250121/FeatureServer "
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline ml-1"
               >
-                https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Palisades_and_Eaton_Dissolved_Fire_Perimeters_as_of_20250121/FeatureServer 
+                https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Palisades_and_Eaton_Dissolved_Fire_Perimeters_as_of_20250121/FeatureServer
               </a>
             </p>
           </div>
