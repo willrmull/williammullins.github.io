@@ -62,7 +62,7 @@ export default function BlogIndex() {
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-4">
                     <Link
-                      href="/blog/evapotranspiration"
+                      href="/blog/fires"
                       className="hover:text-blue-700 transition-colors"
                     >
                       Eaton and Palisades Fires Analysis
