@@ -1,1 +1,8 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/blog/page": "app/blog/page.js",
+  "/blog/aquaculture/page": "app/blog/aquaculture/page.js",
+  "/blog/fires/page": "app/blog/fires/page.js",
+  "/page": "app/page.js"
+}
