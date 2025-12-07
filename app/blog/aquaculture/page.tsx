@@ -187,9 +187,10 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
 
             <h3>Introduction</h3>
             <p>
-              In this analysis, we identified areas along the west coast of the United States which contained
-              suitable depth and sea surface temperature (SST) for aquaculture,
-              specifically on two species: oysters and blue mussels.
+              In this analysis, we identified areas along the west coast of the
+              United States which contained suitable depth and sea surface
+              temperature (SST) for aquaculture, specifically on two species:
+              oysters and blue mussels.
             </p>
 
             {/* Section Divider */}
@@ -366,7 +367,8 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
 
             <h4>Potential Oyster Habitat</h4>
             <p>
-              Oysters prefer slighly warm waters (11-30°C) and are able to be cultivated in shallow depths (0-70 meters).
+              Oysters prefer slighly warm waters (11-30°C) and are able to be
+              cultivated in shallow depths (0-70 meters).
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -393,8 +395,8 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
 
             <h4>Potential Blue Mussel Habitat</h4>
             <p>
-              Blue mussels prefer slightly cooler waters (5-20°C) and shallower depths
-              (0-60 meters) compared to oysters.
+              Blue mussels prefer slightly cooler waters (5-20°C) and shallower
+              depths (0-60 meters) compared to oysters.
             </p>
             <div className="relative mb-6">
               <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
@@ -422,8 +424,8 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
             <h2>Regional Analysis of Suitable Habitat</h2>
             <p>
               To understand the regional distribution of suitable areas across
-              different, we calculated the total area of suitable areas
-              within each Exclusive Economic Zone (EEZ) on the west coast.
+              different, we calculated the total area of suitable areas within
+              each Exclusive Economic Zone (EEZ) on the west coast.
             </p>
 
             <h3>Calculating Suitable Area by Region</h3>
@@ -511,9 +513,10 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
 
             <h3>Implications for Aquaculture Development</h3>
             <p>
-                Although the West Coast appears to have a larger area suited to 
-                blue mussels, oyster farming still dominates every region. That mismatch 
-                may indicate that there is untapped potential for shellfish farming on the west coast.
+              Although the West Coast appears to have a larger area suited to
+              blue mussels, oyster farming still dominates every region. That
+              mismatch may indicate that there is untapped potential for
+              shellfish farming on the west coast.
             </p>
 
             <h3>Limitations and Future Research</h3>
@@ -523,20 +526,21 @@ inner_join(oyster_data, mussel_data, by = "rgn") %>%
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                The analysis uses average annual SST, which doesn't account for
-                seasonal variations that affects shellfish growth cycles.
+                The analysis uses average annual SST, which doesn&apos;t account
+                for seasonal variations that affects shellfish growth cycles.
               </li>
               <li>
                 Other environmental factors such as tidal patterns, wave
-                exposure, and El Nino events where not considered in the analysis.
+                exposure, and El Nino events where not considered in the
+                analysis.
               </li>
               <li>
                 Socioeconomic and regulatory constraints are not incorporated
-                into the suitability model. 
+                into the suitability model.
               </li>
               <li>
-                Future research could add climate change projections to
-                assess long-term viability of aquaculture sites.
+                Future research could add climate change projections to assess
+                long-term viability of aquaculture sites.
               </li>
             </ul>
 
