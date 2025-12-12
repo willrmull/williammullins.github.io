@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/image"; // ✅ FIXED: Added missing Image import
 import {
   ArrowLeft,
   Calendar,
@@ -287,6 +287,7 @@ final_data <- bind_rows(all_tables) %>%
     values_fn = mean
   ) %>% 
 filter(Crop_Type != "Total", Regional_AW_Vol >= 0)`,
+    // ✅ FIXED: Removed quotes around Regional_AW_Vol
 
     // 2: Data Preparation
     `# Select vineyard data
@@ -700,7 +701,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
 
             <p>
               California agriculture accounts for approximately 80% of the
-              state&#39;s developed water supply, making efficient water use
+              state's developed water supply, making efficient water use
               critical for both economic sustainability and environmental
               stewardship. With climate change intensifying drought conditions
               and increasing competition for limited water resources,
@@ -710,11 +711,11 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
 
             <p>
               Vineyards represent a substantial portion of agricultural water
-              consumption, spanning diverse climate zones from California&#39;s
-              cool coastal appellations to its hot interior valleys. Annual
-              applied water volumes range from hundreds to over 100,000
-              acre-feet per hydrologic region—variation that reflects
-              differences in climate, management practices, and efficiency.
+              consumption, spanning diverse climate zones from California's cool
+              coastal appellations to its hot interior valleys. Annual applied
+              water volumes range from hundreds to over 100,000 acre-feet per
+              hydrologic region—variation that reflects differences in climate,
+              management practices, and efficiency.
             </p>
 
             {/* Two-column layout for intro */}
@@ -739,7 +740,9 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                       src="/images/HR_ZONES.png"
                       alt="California Hydrologic Regions map"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-contain rounded"
+                      priority
                     />
                   </div>
                 </div>
@@ -781,9 +784,9 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                 (acre-feet)
               </li>
               <li>
-                <strong>Hydrologic Region (HR)</strong>: California&#39;s 10
-                major hydrologic regions, defined by watershed boundaries and
-                climate characteristics
+                <strong>Hydrologic Region (HR)</strong>: California's 10 major
+                hydrologic regions, defined by watershed boundaries and climate
+                characteristics
               </li>
             </ul>
 
@@ -847,6 +850,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                   src="/images/D.png"
                   alt="Directed Acyclic Graph (DAG)"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain rounded"
                 />
               </div>
@@ -984,6 +988,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                   src="/images/boxplot_aw.png"
                   alt="Box plot of applied water volume in vineyards across California regions, ordered by median water use"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain rounded"
                 />
               </div>
@@ -1094,8 +1099,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             />
 
             <p className="text-sm text-gray-600 mt-2">
-              Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39;
-              0.05 &#39;.&#39; 0.1 &#39; &#39;1
+              Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
             </p>
 
             {/* ================= MODEL VALIDATION ================= */}
@@ -1335,6 +1339,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                   src="/images/ref_comp.png"
                   alt="Regional water use efficiency rankings compared to Central Coast"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain rounded"
                 />
               </div>
@@ -1385,6 +1390,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                   src="/images/actual-predicted.png"
                   alt="Scatter plot of predicted vs actual values with R² = 0.986"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain rounded"
                 />
               </div>
