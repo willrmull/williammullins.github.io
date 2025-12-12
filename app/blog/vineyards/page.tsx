@@ -1281,11 +1281,15 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             />
             <div className="flex justify-center">
               <div className="my-6 w-full max-w-5xl">
-                <img
-                  src="/images/refcomp.png"
-                  alt="Regional water use efficiency rankings compared to Central Coast"
-                  className="w-full h-auto rounded shadow-lg"
-                />
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/refcomp.png"
+                    alt="Box Plot of Applied Water Volume by Hydrologic Region"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
             </div>
 
@@ -1324,11 +1328,15 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
 
             <div className="flex justify-center">
               <div className="my-6 w-full max-w-5xl">
-                <img
-                  src="/images/actualpredicted.png"
-                  alt="Model Performance: Predicted vs Observed Water Use"
-                  className="w-full h-auto rounded shadow-lg"
-                />
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/actualpredicted.png"
+                    alt="Box Plot of Applied Water Volume by Hydrologic Region"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
             </div>
 
