@@ -2,9 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
-// The following line imported icons that were not used in this file:
-// import { Github, Linkedin, Instagram, Mail } from "lucide-react";
-// ^ Removed to fix the linting errors.
 
 const inter = IBM_Plex_Sans({ subsets: ["latin"], weight: ["300", "400"] });
 
@@ -20,6 +17,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Add KaTeX CSS for math rendering */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`${inter.className} flex flex-col min-h-screen bg-white text-gray-800`}
       >
@@ -27,7 +33,6 @@ export default function RootLayout({
         <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100 py-4">
           <div className="container mx-auto px-6 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              {/* Replicating the logo/name feel */}
               <div className="w-10 h-10 bg-slate-900 text-white flex items-center justify-center font-bold rounded-lg">
                 WM
               </div>

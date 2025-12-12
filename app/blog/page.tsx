@@ -33,18 +33,18 @@ export default function BlogIndex() {
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-4">
                     <Link
-                      href="/blog/evapotranspiration"
+                      href="/blog/vineyards"
                       className="hover:text-blue-700 transition-colors"
                     >
                       Forecasting Water Use of Wine Grapes in California
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
-                    Used ARIMA models to model the change evapotranspiration of
-                    wine grapes in California.
+                    Using a gamma model so see the imact region has on vineyard
+                    water use
                   </p>
                   <Link
-                    href="/blog/evapotranspiration"
+                    href="/blog/vineyards"
                     className="inline-flex items-center font-semibold text-purple-600 hover:text-purple-800"
                   >
                     Read Full Post <ArrowRight className="ml-2 w-4 h-4" />
@@ -86,18 +86,20 @@ export default function BlogIndex() {
               <div className="md:flex">
                 <div className="p-8 md:w-2/3 flex flex-col justify-center">
                   <div className="uppercase tracking-wide text-sm text-blue-600 font-semibold mb-2">
-                    Geospatial  R
+                    Geospatial R
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-4">
                     <Link
                       href="/blog/aquaculture"
                       className="hover:text-blue-700 transition-colors"
                     >
-                      Identifying Areas of Potential Aquaculture in the Western US
+                      Identifying Areas of Potential Aquaculture in the Western
+                      US
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
-                    Examining areas along the west coast which contain conditions suitable for aquaculture.
+                    Examining areas along the west coast which contain
+                    conditions suitable for aquaculture.
                   </p>
                   <Link
                     href="/blog/aquaculture"
