@@ -740,7 +740,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               </div>
               <div className="flex justify-center">
                 <div className="w-full max-w-sm">
-                  <div className="relative h-64 w-full">
+                  <div className="relative h-96 w-full">
                     <Image
                       src="/images/HR_ZONES.png"
                       alt="California Hydrologic Regions map"
@@ -847,12 +847,8 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             </p>
 
             <div className="flex justify-center">
-              {/* **MODIFICATION START:**
-                Removed bg-gray-100, border, border-gray-300, and p-4 from the surrounding div.
-                The Image component remains with the object-contain class.
-              */}
-              <div className="my-6">
-                <div className="relative h-48 w-full">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
                   <Image
                     src="/images/D.png"
                     alt="Directed Acyclic Graph (DAG)"
@@ -862,7 +858,6 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                   />
                 </div>
               </div>
-              {/* **MODIFICATION END** */}
             </div>
 
             <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
@@ -1334,21 +1329,18 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               onToggle={toggleCode}
               onCopy={copyToClipboard}
             />
-
-            <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 my-6">
-              <p className="text-center text-gray-400 text-xs mb-2"></p>
-              <div className="relative h-64 w-full">
-                <Image
-                  src="/images/refcomp.png"
-                  alt="Regional water use efficiency rankings compared to Central Coast"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain rounded"
-                />
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/refcomp.png"
+                    alt="Regional water use efficiency rankings compared to Central Coast"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
-              <p className="text-center text-gray-400 text-xs mt-2">
-                Error bars show 95% confidence intervals
-              </p>
             </div>
 
             <p>
@@ -1388,7 +1380,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               <div className="my-6 w-full max-w-5xl">
                 <div className="relative h-96 w-full">
                   <Image
-                    src="/images/Regional_Coeffs.png"
+                    src="/images/actualpredicted.png"
                     alt="Regional Water Use Coefficients"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
