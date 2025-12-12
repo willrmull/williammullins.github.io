@@ -700,22 +700,30 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             </p>
 
             <p>
-              California agriculture accounts for approximately 80% of the
-              state's developed water supply, making efficient water use
-              critical for both economic sustainability and environmental
-              stewardship. With climate change intensifying drought conditions
-              and increasing competition for limited water resources,
-              understanding regional differences in agricultural water use has
-              become essential for policy development and resource allocation.
+              California&apos;s agriculture is the state&apos;s dominant water
+              consumer, accounting for approximately 80% of its developed water
+              supply. The efficiency of this water use is paramount for economic
+              resilience and environmental stewardship, particularly as climate
+              change exacerbates drought frequency and intensifies competition
+              for limited resources.
             </p>
 
             <p>
-              Vineyards represent a substantial portion of agricultural water
-              consumption, spanning diverse climate zones from California's cool
-              coastal appellations to its hot interior valleys. Annual applied
-              water volumes range from hundreds to over 100,000 acre-feet per
-              hydrologic region—variation that reflects differences in climate,
-              management practices, and efficiency.
+              Vineyards represent a significant and geographically diverse
+              component of the state&apos;s agricultural portfolio, spanning
+              disparate climate zones from the cool coastal valleys to the hot
+              interior regions. While climatic factors are known drivers of
+              water demand, regional differences inherent to California&apos;s
+              10 major hydrologic regions include additional variables such as
+              such as water management practices, regulatory structures, soil
+              characteristics, and crop varieties—may exert an independent and
+              measurable influence on observed water use efficiency.
+            </p>
+
+            <p>
+              The aim of this analysis is to quantify the magnitude and
+              direction of the independent effect of hydrologic region on
+              vineyard water use efficiency across California.
             </p>
 
             {/* Two-column layout for intro */}
@@ -784,9 +792,9 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                 (acre-feet)
               </li>
               <li>
-                <strong>Hydrologic Region (HR)</strong>: California's 10 major
-                hydrologic regions, defined by watershed boundaries and climate
-                characteristics
+                <strong>Hydrologic Region (HR)</strong>: California&apos;s 10
+                major hydrologic regions, defined by watershed boundaries and
+                climate characteristics
               </li>
             </ul>
 
@@ -1099,7 +1107,8 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             />
 
             <p className="text-sm text-gray-600 mt-2">
-              Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+              Signif. codes: 0 &apos;***&apos; 0.001 &apos;**&apos; 0.01
+              &apos;*&apos; 0.05 &apos;.&apos; 0.1 &apos; &apos; 1
             </p>
 
             {/* ================= MODEL VALIDATION ================= */}
@@ -1336,7 +1345,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               </p>
               <div className="relative h-64 w-full">
                 <Image
-                  src="/images/ref_comp.png"
+                  src="/images/refcomp.png"
                   alt="Regional water use efficiency rankings compared to Central Coast"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -1387,7 +1396,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               </p>
               <div className="relative h-64 w-full">
                 <Image
-                  src="/images/actual-predicted.png"
+                  src="/images/actualpredicted.png"
                   alt="Scatter plot of predicted vs actual values with R² = 0.986"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
