@@ -979,6 +979,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
                     className="object-contain rounded"
+                    priority
                   />
                 </div>
               </div>
@@ -1288,6 +1289,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
                     className="object-contain rounded"
+                    priority
                   />
                 </div>
               </div>
@@ -1335,6 +1337,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
                     className="object-contain rounded"
+                    priority
                   />
                 </div>
               </div>
