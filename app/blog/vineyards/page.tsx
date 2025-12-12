@@ -974,7 +974,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               <div className="my-6 w-full max-w-5xl">
                 <div className="relative h-96 w-full">
                   <Image
-                    src="/images/BoxPlot_AW_HR.png"
+                    src="/images/boxplot_aw.png"
                     alt="Box Plot of Applied Water Volume by Hydrologic Region"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
