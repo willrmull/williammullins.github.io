@@ -739,10 +739,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
                 </p>
               </div>
               <div className="flex justify-center">
-                <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 w-full max-w-sm">
-                  <p className="text-center text-gray-500 text-sm mb-2">
-                    Figure 1: California Hydrologic Regions
-                  </p>
+                <div className="w-full max-w-sm">
                   <div className="relative h-64 w-full">
                     <Image
                       src="/images/HR_ZONES.png"
@@ -849,19 +846,23 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               region (Central Coast) represents the efficiency baseline.
             </p>
 
-            <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 my-6">
-              <p className="text-center text-gray-500 text-sm mb-2">
-                Figure 2: Directed Acyclic Graph (DAG)
-              </p>
-              <div className="relative h-48 w-full">
-                <Image
-                  src="/images/D.png"
-                  alt="Directed Acyclic Graph (DAG)"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain rounded"
-                />
+            <div className="flex justify-center">
+              {/* **MODIFICATION START:**
+                Removed bg-gray-100, border, border-gray-300, and p-4 from the surrounding div.
+                The Image component remains with the object-contain class.
+              */}
+              <div className="my-6">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src="/images/D.png"
+                    alt="Directed Acyclic Graph (DAG)"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
+              {/* **MODIFICATION END** */}
             </div>
 
             <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
@@ -986,19 +987,17 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               onCopy={copyToClipboard}
             />
 
-            <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 my-6">
-              <p className="text-center text-gray-500 text-sm mb-2">
-                Figure 3: Applied Water Volume in Vineyards Across California
-                Regions
-              </p>
-              <div className="relative h-64 w-full">
-                <Image
-                  src="/images/boxplot_aw.png"
-                  alt="Box plot of applied water volume in vineyards across California regions, ordered by median water use"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain rounded"
-                />
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/BoxPlot_AW_HR.png"
+                    alt="Box Plot of Applied Water Volume by Hydrologic Region"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
             </div>
             {/* ================= STATISTICAL MODEL ================= */}
@@ -1337,12 +1336,7 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             />
 
             <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 my-6">
-              <p className="text-center text-gray-500 text-sm mb-2">
-                Figure 4: Regional Water Use Efficiency Rankings
-              </p>
-              <p className="text-center text-gray-400 text-xs mb-2">
-                % More Water Used Compared to Central Coast
-              </p>
+              <p className="text-center text-gray-400 text-xs mb-2"></p>
               <div className="relative h-64 w-full">
                 <Image
                   src="/images/refcomp.png"
@@ -1390,18 +1384,17 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               {"$$R^2 = \\text{cor}\\left(y_i, \\hat{y}_i\\right)^2$$"}
             </div>
 
-            <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 my-6">
-              <p className="text-center text-gray-500 text-sm mb-2">
-                Figure 5: Model Performance: Predicted vs Actual
-              </p>
-              <div className="relative h-64 w-full">
-                <Image
-                  src="/images/actualpredicted.png"
-                  alt="Scatter plot of predicted vs actual values with R² = 0.986"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain rounded"
-                />
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/Regional_Coeffs.png"
+                    alt="Regional Water Use Coefficients"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                  />
+                </div>
               </div>
             </div>
 
