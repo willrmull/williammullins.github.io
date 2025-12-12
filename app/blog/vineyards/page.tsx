@@ -581,18 +581,6 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
     ],
   };
 
-  // Type III ANOVA Table
-  const anovaData = {
-    headers: ["Predictor", "Df", "Chi-sq", "Pr(>Chisq)"],
-    rows: [
-      ["(Intercept)", "1", "1816.8", "< 2.2e-16 ***"],
-      ["Regional_ETc_Vol", "1", "10.34", "0.001305 **"],
-      ["Regional_Ep_Vol", "1", "7.45", "0.006343 **"],
-      ["log(Regional_ICA)", "1", "208,500", "< 2.2e-16 ***"],
-      ["HR", "8", "1,630.2", "< 2.2e-16 ***"],
-    ],
-  };
-
   // Parameter Recovery Table
   const paramRecoveryData = {
     headers: ["Parameter", "True Value", "Recovered", "Difference", "% Error"],
@@ -1254,44 +1242,6 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
               </li>
             </ul>
 
-            <h4 className="text-xl font-semibold text-gray-800 mt-6 mb-2">
-              Type III ANOVA: Individual Predictor Significance
-            </h4>
-
-            <DataTable
-              headers={anovaData.headers}
-              rows={anovaData.rows}
-              caption="Analysis of Deviance Table (Type III tests)"
-            />
-
-            <p>
-              <strong>Parameter Significance:</strong>
-            </p>
-            <ul className="list-disc pl-6 space-y-2 mb-6">
-              <li>
-                <strong>Hydrologic Region</strong>: Strongest regional effect (
-                {"$\\chi^2$"} = 1,630.2, p {"<"} 0.001). Interpretation:
-                Regional policies, infrastructure, soil types, or unmeasured
-                climatic factors significantly drive water use differences
-                beyond climate and vineyard size.
-              </li>
-              <li>
-                <strong>Vineyard Size (log(Regional_ICA))</strong>: Extremely
-                significant ({"$\\chi^2$"} = 208,500, p {"<"} 0.001).
-              </li>
-              <li>
-                <strong>Climate Drivers</strong>: Crop ET (Regional_ETc_Vol):
-                Significant (p = 0.0013). Higher water demand → more applied
-                water. Effective Precip (Regional_Ep_Vol): Significant (p =
-                0.0063). Natural rainfall offsets irrigation needs.
-              </li>
-              <li>
-                <strong>Intercept</strong>: Baseline water use (when all
-                predictors = 0) is non-zero (p {"<"} 0.001), reflecting fixed
-                irrigation requirements.
-              </li>
-            </ul>
-
             <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
               Individual Region Comparisons
             </h3>
@@ -1331,15 +1281,11 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
             />
             <div className="flex justify-center">
               <div className="my-6 w-full max-w-5xl">
-                <div className="relative h-96 w-full">
-                  <Image
+                  <img
                     src="/images/refcomp.png"
                     alt="Regional water use efficiency rankings compared to Central Coast"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-contain rounded"
+                    className="w-full h-auto rounded shadow-lg"
                   />
-                </div>
               </div>
             </div>
 
@@ -1378,15 +1324,11 @@ ggplot(vineyard_data, aes(x = Regional_AW_Vol, y = predicted)) +
 
             <div className="flex justify-center">
               <div className="my-6 w-full max-w-5xl">
-                <div className="relative h-96 w-full">
-                  <Image
+                  <img
                     src="/images/actualpredicted.png"
-                    alt="Regional Water Use Coefficients"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
-                    className="object-contain rounded"
+                    alt="Model Performance: Predicted vs Observed Water Use"                    "
+                    className="w-full h-auto rounded shadow-lg"
                   />
-                </div>
               </div>
             </div>
 
