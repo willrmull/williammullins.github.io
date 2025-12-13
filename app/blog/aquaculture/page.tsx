@@ -1,13 +1,167 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Calendar, Tag, Github } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import {
+  ArrowLeft,
+  Calendar,
+  Tag,
+  Github,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
-export default function AquacultureAnalysisPost() {
+interface CodeBlockProps {
+  code: string;
+  index: number;
+  title?: string;
+  expandedCode: { [key: number]: boolean };
+  copiedIndex: number | null;
+  onToggle: (index: number) => void;
+  onCopy: (text: string, index: number) => void;
+}
+
+const CodeBlock = ({
+  code,
+  index,
+  title,
+  expandedCode,
+  copiedIndex,
+  onToggle,
+  onCopy,
+}: CodeBlockProps) => {
+  const isExpanded = expandedCode[index] ?? false;
+
+  return (
+    <div className="relative mb-6">
+      <button
+        onClick={() => onToggle(index)}
+        className="w-full flex items-center justify-between bg-gradient-to-r from-teal-700 to-cyan-700 text-white px-4 py-2 rounded-t-lg text-sm font-medium hover:from-teal-600 hover:to-cyan-600 transition-all"
+      >
+        <span className="flex items-center gap-2">
+          {isExpanded ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+          {title || "View Code"}
+        </span>
+        <span className="text-xs opacity-75">R</span>
+      </button>
+      {isExpanded && (
+        <div className="relative">
+          <pre className="bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto text-sm border-l-4 border-teal-500">
+            <code>{code}</code>
+          </pre>
+          <button
+            onClick={() => onCopy(code, index)}
+            className="absolute top-2 right-2 text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition"
+          >
+            {copiedIndex === index ? "Copied!" : "Copy"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface TableProps {
+  headers: string[];
+  rows: (string | number)[][];
+  caption?: string;
+}
+
+const DataTable = ({ headers, rows, caption }: TableProps) => (
+  <div className="overflow-x-auto my-6">
+    <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+      <thead className="bg-gradient-to-r from-teal-600 to-cyan-600 text-white">
+        <tr>
+          {headers.map((header, i) => (
+            <th key={i} className="px-4 py-3 text-left text-sm font-semibold">
+              {header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {rows.map((row, i) => (
+          <tr key={i} className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+            {row.map((cell, j) => (
+              <td key={j} className="px-4 py-3 text-sm text-gray-700">
+                {typeof cell === "number" ? cell.toLocaleString() : cell}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    {caption && (
+      <p className="text-sm text-gray-500 mt-2 text-center italic">{caption}</p>
+    )}
+  </div>
+);
+
+export default function AquaculturePost() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [expandedCode, setExpandedCode] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+  const [katexLoaded, setKatexLoaded] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Load KaTeX CSS and scripts
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).katex) {
+      setKatexLoaded(true);
+      return;
+    }
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css";
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js";
+    script.crossOrigin = "anonymous";
+
+    script.onload = () => {
+      const autoRenderScript = document.createElement("script");
+      autoRenderScript.src =
+        "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js";
+      autoRenderScript.crossOrigin = "anonymous";
+      autoRenderScript.onload = () => {
+        setKatexLoaded(true);
+      };
+      document.head.appendChild(autoRenderScript);
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  // Render math when KaTeX is loaded
+  useEffect(() => {
+    if (
+      katexLoaded &&
+      contentRef.current &&
+      typeof window !== "undefined" &&
+      (window as any).renderMathInElement
+    ) {
+      (window as any).renderMathInElement(contentRef.current, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+        ],
+        throwOnError: false,
+        trust: true,
+        strict: false,
+      });
+    }
+  }, [katexLoaded]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,569 +183,787 @@ export default function AquacultureAnalysisPost() {
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
+  const toggleCode = (index: number) => {
+    setExpandedCode((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
+
   const codeBlocks = [
-    `
+    // 0: Load Packages
+    `reqired_packages <- c("terra", "tidyverse", "here", "knitr", "kableExtra")
+
+for(pkg in reqired_packages){
+  if (!require(pkg, character.only = TRUE)){
+     stop(paste0("Package &apos;", pkg, "&apos; is not installed"))
+  } 
+}
+
+# Load required packages
+suppressPackageStartupMessages({
   library(tidyverse)
   library(terra)
   library(here)
   library(knitr)
-  library(kableExtra)`,
+  library(kableExtra)
+})`,
 
-    `# Read in sea surface temperature data
-sst <- rast(c(
-  here("data", "average_annual_sst_2008.tif"),
-  here("data", "average_annual_sst_2009.tif"),
-  here("data", "average_annual_sst_2010.tif"),
-  here("data", "average_annual_sst_2011.tif"),
-  here("data", "average_annual_sst_2012.tif")
-))
+    // 1: Data Import
+    `sst <- rast(c(here("data", "average_annual_sst_2008.tif"),
+              here("data", "average_annual_sst_2009.tif"),
+              here("data", "average_annual_sst_2010.tif"),
+              here("data", "average_annual_sst_2011.tif"),
+              here("data", "average_annual_sst_2012.tif")))
 
 # Read in depth file
-depth <- rast(here("data", "depth.tif")) %>% project(crs(sst))`,
+depth <- rast(here("data", "depth.tif")) %>%
+  project(crs(sst), verbose = FALSE) %>%
+  suppressMessages()
 
-    `eez_raster <- vect(here::here("data", "wc_regions_clean.shp"))
-mean_sst <- app(sst, fun = mean, na.rm = TRUE)
+eez_raster <- vect(here("data", "wc_regions_clean.shp"))`,
 
-# Convert From Kelvin to Celsius
+    // 2: Data Processing (Mean SST)
+    `mean_sst <- app(sst, fun = mean, na.rm = TRUE)
+
+# Convert from Kelvin to Celsius
 mean_sst <- mean_sst - 273.15
-plot(mean_sst)`,
 
+# Change Margins on top and bottom
+par(oma = c(1, 0, 3, 0))
+
+# Create an informative plot of mean SST
+plot(mean_sst,
+     main = "Mean Sea Surface Temperature \\n(2008-2012)",
+     col = hcl.colors(40, "RdYlBu", rev = TRUE),
+     xlab = "Longitude",
+     ylab = "Latitude",
+     cex.main = 1.0,
+     plg = list(title = "SST (°C)"))`,
+
+    // 3: Depth Data Preparation
     `# Resample depth using nearest neighbor approach
 depth <- resample(depth, mean_sst, method = "near")
 
 # Crop raster to match SST
 depth_cropped <- crop(depth, mean_sst)
 
-# Check that the depth and SST match in resolution, extent, and coordinate reference system
-compareGeom(depth_cropped, mean_sst, res = TRUE, ext = TRUE, crs = TRUE)`,
+# check that the depth and SST match in resolution, extent, and coordinate reference system
+compareGeom(depth_cropped, mean_sst, res = TRUE, ext = TRUE, crs = TRUE)
 
-    `habitable_areas <- function(temp_min, temp_max, depth_min, depth_max, species_name) {
-  # Create mask of SST and depth values in range
-  sst_suitable <- mean_sst >= temp_min & mean_sst <= temp_max
-  depth_suitable <- depth_cropped >= depth_min & depth_cropped <= depth_max
-  
-  # Create mask where both conditions are met
-  suitable_habitat <- sst_suitable * depth_suitable
-  
-  # Plot of suitable habitats
-  habitat_plot <- plot(suitable_habitat, 
-                      col = c("gray90", "maroon"), 
-                      type = "classes", 
-                      levels = c("Unsuitable", "Suitable"),
-                      main = paste("Potential", species_name, "Habitat\\n(SST:", temp_min, "-", temp_max, "C, Depth:", depth_min, "-", depth_max, "m)"),
-                      xlab = "Longitude", 
-                      ylab = "Latitude", 
-                      axes = TRUE,
-                      plg = list(x = "topright", title = "Classification") # Legend position
+# Verify alignment of datasets
+alignment_check <- compareGeom(depth_cropped, mean_sst, res = TRUE, ext = TRUE, crs = TRUE)
+
+if (!alignment_check) {
+  stop(
+    "Depth and SST rasters are not properly aligned! Check resolution, extent, and CRS of both datasets. ",
+    call. = FALSE
   )
-  
-  # Return the plot
-  return(habitat_plot)
+} else {
+  message("Depth and SST rasters are properly aligned (resolution, extent, and CRS match)")
 }`,
 
+    // 4: Suitability Function
+    `# Function for identifying and plotting suitable habitats
+find_suitable_habitat <- function(temp_min, temp_max, depth_min, depth_max, species_name) {
+  
+  # Create binary masks for suitable conditions
+  sst_suitable <- mean_sst >= temp_min & mean_sst <= temp_max
+  depth_suitable <- depth_cropped >= depth_min & depth_cropped <= depth_max
+  
+  # Combine masks where both conditions are met
+  suitable_habitat <- sst_suitable * depth_suitable
+  
+  # Convert to factor
+  suitable_habitat <- as.factor(suitable_habitat)
+  levels(suitable_habitat) <- c("Unsuitable", "Suitable")
+  
+  # Create informative plot
+  par(oma = c(1, 1, 1.5, 1))
+  
+  plot(suitable_habitat,
+       col = c("#D3D3D3", "#228B22"),
+       type = "classes",
+       main = paste0("Potential ", species_name, " Aquaculture Habitat\\nSST: ", temp_min, "–", temp_max, "°C | Depth: ", depth_min, "–", depth_max, " m"),
+       xlab = "Longitude",
+       ylab = "Latitude",
+       axes = TRUE,
+       cex.main = 0.8,
+       plg = list(x = "topright", title = "Suitability"))
+  
+  # Return the raster
+  return(suitable_habitat)
+}`,
+
+    // 5: Oyster Habitat
     `# View Areas Habitable by Oysters
-oysters <- habitable_areas(11, 30, 0, 70, "Oyster")`,
+oyster_habitat <- find_suitable_habitat(
+  temp_min = 11,
+  temp_max = 30,
+  depth_min = 0,
+  depth_max = 70,
+  species_name = "Oyster"
+)`,
 
-    `# View Areas Habitable by Blue Mussels
-mussels <- habitable_areas(5, 20, 0, 60, "Blue Mussel")`,
+    // 6: Mussel Habitat
+    `# Identify suitable habitat for blue mussels
+mussel_habitat <- find_suitable_habitat(
+  temp_min = -1,
+  temp_max = 20,
+  depth_min = 0,
+  depth_max = 24,
+  species_name = "Blue Mussel"
+)`,
 
+    // 7: Total Habitable Areas Function
     `# Returns a data frame of the area suitable for a species by region
-habitable_areas_table <- function(temp_min, temp_max, depth_min, depth_max, species_name) {
+total_habitable_areas <- function(temp_min, temp_max, depth_min, depth_max, species_name){
+  
+  # Create suitability masks
   sst_suitable <- mean_sst >= temp_min & mean_sst <= temp_max
   depth_suitable <- depth_cropped >= depth_min & depth_cropped <= depth_max
   suitable_habitat <- sst_suitable * depth_suitable
   
+  # Rasterize EEZ regions
   eez_raster <- rasterize(eez_raster, suitable_habitat, field = "rgn")
   
-  # Get the cell size of cells in dataframe
+  # Calculate cell area 
   cell_area <- cellSize(suitable_habitat, unit = "km")
   
   # Get area of suitable cells in dataframe
   area_suitable <- cell_area * suitable_habitat
   
-  # Get the total amount of area that is suitable in each EEZ
+  # Get the total area that is suitable in each EEZ
   total_area_by_eez <- zonal(area_suitable, eez_raster, fun = "sum", na.rm = TRUE)
+  
   return(total_area_by_eez)
-}
+}`,
 
-oyster_data <- habitable_areas_table(11, 30, 0, 70, "Oyster") %>% rename("Oysters" = area)
-mussel_data <- habitable_areas_table(5, 20, 0, 60, "Blue Mussel") %>% rename("Blue Mussel" = area)
+    // 8: Calculate Areas
+    `# Calculate suitable area for each species
 
-inner_join(oyster_data, mussel_data, by = "rgn") %>%
+oyster_area <- total_habitable_areas(
+  temp_min = 11,
+  temp_max = 30,
+  depth_min = 0,
+  depth_max = 70,
+  species_name = "Oyster") %>% 
+  rename("Oysters" = area)
+
+mussel_area <- total_habitable_areas(  
+  temp_min = -1,
+  temp_max = 20,
+  depth_min = 0,
+  depth_max = 24,
+  species_name = "Blue Mussel") %>%
+  rename("Blue Mussle" = area)
+
+
+# Join results and create formatted table
+habitat_summary <- inner_join(oyster_area, mussel_area, by = "rgn") %>%
   rename("Region" = rgn) %>%
-  kbl(caption = "Suitable Area For Oysters and Blue Mussels") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))`,
+  mutate(across(where(is.numeric), ~round(.x, 2))) %>%
+  kbl(
+    caption = "Suitable Area For Oysters and Blue Mussles",
+    align = c("l", "r", "r")
+  ) %>% 
+    kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE
+  ) %>%
+  add_header_above(c(" " = 1, "Suitable Area (km²)" = 2))
+
+habitat_summary`,
   ];
 
+  // Habitat summary data for table
+  const habitatSummaryData = {
+    headers: ["Region", "Oysters (km²)", "Blue Mussels (km²)"],
+    rows: [
+      ["Central California", "103.50", "120.89"],
+      ["Northern California", "32.67", "33.36"],
+      ["Oregon", "30.11", "76.65"],
+      ["Southern California", "160.53", "124.68"],
+      ["Washington", "131.35", "260.91"],
+    ],
+  };
+
   return (
-    <article className="min-h-screen bg-gray-50 py-20">
+    <article className="min-h-screen bg-gray-50">
       {/* Progress Indicator */}
       <div className="fixed top-0 left-0 w-full h-1 bg-transparent z-50">
         <div
-          className="h-full bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-150"
+          className="h-full bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 transition-all duration-150"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
-
-      {/* ------- HERO IMAGE BACKGROUND ------- */}
-      <div className="relative w-full h-96 md:h-[28rem] bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center px-6">
-        <div className="text-white text-center max-w-4xl">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-md">
-            Identifying Areas of Potential Aquaculture in the Western US
-          </h1>
-          <p className="text-sm md:text-base mb-4 drop-shadow">
-            Author: William Mullins ・ Date: December 7, 2025
-          </p>
-          <a
-            href="https://github.com/willrmull/potential_aquaculture"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-white hover:text-gray-200 transition"
-          >
-            <Github className="w-5 h-5" />
-            <span>GitHub Repository</span>
-          </a>
+      ;{/* Hero Image Background */}
+      <div className="relative w-full h-96 md:h-[28rem]">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-500 via-cyan-500 via-sky-500 to-blue-600" />
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 flex items-center justify-center px-6">
+          <div className="text-white text-center max-w-4xl">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+              Identifying Areas of Potential Aquaculture in the Western US
+            </h1>
+            <p className="text-sm md:text-base mb-2">
+              Author: William Mullins ・ Date: December 10, 2025
+            </p>
+            <a
+              href="https://github.com/willrmull/potential_aquaculture.git"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-white hover:text-gray-300 transition"
+            >
+              <Github className="w-5 h-5" />
+              <span>GitHub</span>
+            </a>
+          </div>
         </div>
       </div>
-
+      ;
       <div className="container mx-auto px-6">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <Link
             href="/blog"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mt-10 mb-8 transition-colors"
+            className="inline-flex items-center text-teal-600 hover:text-teal-800 mt-10 mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Blog
           </Link>
 
           <header className="mb-12">
-            <div className="flex gap-2 mb-4">
-              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                Spatial Analysis
+            <div className="flex gap-2 mb-4 flex-wrap">
+              <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                Marine Science
+              </span>
+              <span className="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-sm font-medium">
+                Aquaculture
+              </span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                Geospatial Analysis
               </span>
             </div>
             <div className="flex items-center text-gray-600 text-sm border-b border-gray-200 pb-8">
               <span className="flex items-center mr-6">
                 <Calendar className="w-4 h-4 mr-2" />
-                December 7, 2025
+                December 10, 2025
               </span>
               <span className="flex items-center">
-                <Tag className="w-4 h-4 mr-2" />R · Geospatial · Environmental
-                Science
+                <Tag className="w-4 h-4 mr-2" />R · Terra · Raster Analysis
               </span>
             </div>
           </header>
 
-          <div className="prose prose-lg prose-slate mx-auto text-gray-700">
-            {/* Section Divider */}
-            <div className="h-px bg-gray-300 my-10" />
+          {/* Content with ref for KaTeX rendering */}
+          <div
+            ref={contentRef}
+            className="prose prose-lg prose-slate mx-auto text-gray-700"
+          >
+            {/* ================= INTRODUCTION ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Introduction
+            </h2>
 
-            <h3>Introduction</h3>
-            <p>
+            <p className="text-lg font-semibold text-teal-700 mb-4">
               In this analysis, we identified areas along the west coast of the
               United States which contained suitable depth and sea surface
-              temperature (SST) for aquaculture, specifically on two species:
+              temperature (SST) for aquaculture, specifically for two species:
               oysters and blue mussels.
             </p>
 
-            {/* Section Divider */}
-            <div className="h-px bg-gray-300 my-10" />
+            <p>
+              Marine aquaculture plays an increasingly important role in meeting
+              global seafood demand while potentially reducing pressure on wild
+              fish populations. The success of aquaculture operations depends
+              critically on environmental conditions, particularly water
+              temperature and depth, which vary substantially along the US West
+              Coast.
+            </p>
 
-            <h3>Datasets Used</h3>
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div>
-                <a
-                  href="https://podaac.jpl.nasa.gov/dataset/AVHRR_PATHFINDER_L3_V52"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  NOAA Pathfinder Sea Surface Temperature Data
-                </a>
-                <p className="text-sm mt-2">
-                  Five-year average of sea surface temperature data from
-                  2008-2012, providing a comprehensive baseline for temperature
-                  analysis along the western US coast.
-                </p>
-              </div>
-              <div>
-                <a
-                  href="https://www.ncei.noaa.gov/access/gridded-bathymetry-data"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  NOAA Bathymetry Data
-                </a>
-                <p className="text-sm mt-2">
-                  High-resolution ocean depth measurements used to identify
-                  suitable depths for shellfish cultivation.
-                </p>
-              </div>
-            </div>
-            <div>
-              <a
-                href="https://www.fisheries.noaa.gov/west-coast/marine-protected-areas/west-coast-regional-boundaries"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                West Coast Regional Boundaries
-              </a>
-              <p className="text-sm mt-2">
-                Spatial boundaries defining the Exclusive Economic Zones (EEZs)
-                for California, Oregon, and Washington, used to calculate
+            <p>
+              This analysis uses geospatial data to identify regions within the
+              Exclusive Economic Zones (EEZs) of California, Oregon, and
+              Washington that meet the environmental requirements for oyster and
+              blue mussel cultivation.
+            </p>
+
+            {/* ================= DATASETS ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Datasets Used
+            </h3>
+
+            <ul className="list-disc pl-6 space-y-2 mb-6">
+              <li>
+                <strong>
+                  <a
+                    href="https://coralreefwatch.noaa.gov/product/5km/index_5km_ssta.php"
+                    className="text-teal-600 hover:text-teal-800 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    NOAA Pathfinder Sea Surface Temperature Data
+                  </a>
+                </strong>
+                : Five-year average of sea surface temperature data from
+                2008-2012, providing a baseline for temperature analysis along
+                the western US coast.
+              </li>
+              <li>
+                <strong>
+                  <a
+                    href="https://www.gebco.net/data-products/gridded-bathymetry-data#area"
+                    className="text-teal-600 hover:text-teal-800 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    NOAA Bathymetry Data
+                  </a>
+                </strong>
+                : High-resolution ocean depth measurements used to identify
+                suitable depths for shellfish cultivation.
+              </li>
+              <li>
+                <strong>
+                  <a
+                    href="https://www.marineregions.org/eez.php"
+                    className="text-teal-600 hover:text-teal-800 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    West Coast Regional Boundaries
+                  </a>
+                </strong>
+                : Spatial boundaries defining the Exclusive Economic Zones
+                (EEZs) for California, Oregon, and Washington, used to calculate
                 suitable habitat area by region.
-              </p>
-            </div>
+              </li>
+            </ul>
 
-            {/* Section Divider */}
-            <div className="h-px bg-gray-300 my-10" />
+            {/* ================= LOADING PACKAGES ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Loading Packages
+            </h3>
 
-            <h4>Loading Required Packages</h4>
+            <CodeBlock
+              code={codeBlocks[0]}
+              index={0}
+              title="Load Required Packages"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            {/* ================= DATA IMPORT ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Data Import
+            </h3>
+
             <p>
-              First, we load the necessary R packages for spatial analysis, data
-              manipulation, and visualization. The script checks if each
-              required package is installed before loading them.
+              The following section imports the three datasets used in the
+              analysis. We implement validation checks to ensure files exist
+              before attempting to load them.
             </p>
-            <div className="relative mb-8">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[0]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[0], 0)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 0 ? "Copied!" : "Copy"}
-              </button>
-            </div>
 
-            <h3>Sea Surface Temperature Analysis</h3>
+            <ul className="list-disc pl-6 space-y-2 mb-6">
+              <li>
+                The SST data are stored as individual GeoTIFF files, each
+                representing the average annual SST for a given year. These
+                rasters are stacked into a single multi-layer raster object.
+              </li>
+              <li>
+                The bathymetry raster is then imported and reprojected to match
+                the coordinate reference system of the SST stack.
+              </li>
+              <li>The EEZ boundaries are read as a vector layer.</li>
+            </ul>
+
+            <CodeBlock
+              code={codeBlocks[1]}
+              index={1}
+              title="Import Datasets"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            {/* ================= DATA PROCESSING ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              Data Processing
+            </h2>
+
             <p>
-              Sea surface temperature is a critical factor for shellfish
-              survival and growth.
+              To find the temporal mean SST across the 2008–2012 period, we
+              compute the average across the raster stack. Since the original
+              values are in Kelvin, we convert them to Celsius by subtracting
+              273.15.
             </p>
 
-            <h4>Reading and Processing SST Data</h4>
+            <CodeBlock
+              code={codeBlocks[2]}
+              index={2}
+              title="Calculate Mean SST"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/sst_mean.png"
+                    alt="Mean Sea Surface Temperature (2008-2012)"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+
             <p>
-              The SST data is read from multiple GeoTIFF files and combined into
-              a single raster stack. The depth data is then reprojected to match
-              the CRS of the SST data.
+              <strong>Interpretation:</strong> This map reveals the
+              characteristic temperature gradient along the US West Coast.
+              Southern California exhibits the warmest waters (20-25°C), while
+              the Pacific Northwest and areas influenced by coastal upwelling
+              show cooler temperatures (10-15°C). This spatial variation in
+              temperature has important implications for species-specific
+              aquaculture siting, as different shellfish species have distinct
+              thermal tolerances.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[1]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[1], 1)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 1 ? "Copied!" : "Copy"}
-              </button>
-            </div>
 
-            <h4>Calculating Mean SST and Converting Units</h4>
-            <p>
-              We calculate the mean SST across all years and convert the
-              temperature from Kelvin to Celsius for easier interpretation. The
-              resulting raster shows the average annual sea surface temperature
-              along the western US coast.
-            </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[2]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[2], 2)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 2 ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            {/* IMAGE 1 - Mean SST Plot */}
-            <div className="relative w-full h-80 mt-4 mb-10">
-              <Image
-                src="/images/mean_sst_plot.png"
-                alt="Mean Sea Surface Temperature Plot"
-                fill
-                style={{ objectFit: "contain" }}
-                className="rounded-xl shadow-lg border border-gray-200"
-                unoptimized
-              />
-            </div>
+            {/* ================= DEPTH DATA PREPARATION ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Depth Data Preparation
+            </h3>
 
-            <h3>Depth Data Preparation</h3>
-            <h4>Processing Depth Raster</h4>
             <p>
               The depth raster is resampled to match the resolution and extent
               of the SST data using nearest neighbor interpolation. This ensures
               that both datasets align perfectly for subsequent analysis.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[3]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[3], 3)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 3 ? "Copied!" : "Copy"}
-              </button>
-            </div>
 
-            <h3>Habitat Suitability Analysis</h3>
+            <CodeBlock
+              code={codeBlocks[3]}
+              index={3}
+              title="Prepare Depth Data"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            {/* ================= HABITAT SUITABILITY ANALYSIS ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              Habitat Suitability Analysis
+            </h2>
+
             <p>
-              To identify areas suitable for aquaculture, we defined temperature
-              and depth ranges for each species based on their biological
-              requirements. The analysis creates binary masks where 1 represents
-              suitable habitat and 0 represents unsuitable areas.
+              To evaluate the potential of locations for marine aquaculture of a
+              given species, we use measurements of environmental tolerances.
+              Using these thresholds, each pixel in the study area is classified
+              as either suitable or unsuitable based on whether it
+              simultaneously satisfies both temperature and depth criteria.
             </p>
 
-            <h4>Suitability Function</h4>
-            <p>
-              This function creates masks for both temperature and depth
-              conditions, then combines them to identify areas where both
-              criteria are met. It also generates a visualization showing
-              suitable versus unsuitable areas.
-            </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[4]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[4], 4)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 4 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Suitability Function
+            </h3>
 
-            <h4>Potential Oyster Habitat</h4>
             <p>
-              Oysters prefer slighly warm waters (11-30°C) and are able to be
+              The <code>find_suitable_habitat()</code> function implements this
+              logic by first generating binary masks for temperature and depth
+              suitability. The rasters are then combined, producing a
+              categorical raster containing locations where both conditions are
+              met.
+            </p>
+
+            <CodeBlock
+              code={codeBlocks[4]}
+              index={4}
+              title="Suitability Function"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            {/* ================= OYSTER HABITAT ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Map of Potential Oyster Habitats
+            </h3>
+
+            <p>
+              Oysters prefer slightly warm waters (11-30°C) and are able to be
               cultivated in shallow depths (0-70 meters).
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[5]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[5], 5)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 5 ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            {/* IMAGE 2 - Oyster Habitat */}
-            <div className="relative w-full h-80 mt-4 mb-10">
-              <Image
-                src="/images/oyster_habitat.png"
-                alt="Potential Oyster Habitat Map"
-                fill
-                style={{ objectFit: "contain" }}
-                className="rounded-xl shadow-lg border border-gray-200"
-                unoptimized
-              />
+
+            <CodeBlock
+              code={codeBlocks[5]}
+              index={5}
+              title="Oyster Habitat Analysis"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/oysters.png"
+                    alt="Potential Oyster Aquaculture Habitat"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
 
-            <h4>Potential Blue Mussel Habitat</h4>
             <p>
-              Blue mussels prefer slightly cooler waters (5-20°C) and shallower
-              depths (0-60 meters) compared to oysters.
-            </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[6]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[6], 6)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 6 ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            {/* IMAGE 3 - Mussel Habitat */}
-            <div className="relative w-full h-80 mt-4 mb-10">
-              <Image
-                src="/images/mussel_habitat.png"
-                alt="Potential Blue Mussel Habitat Map"
-                fill
-                style={{ objectFit: "contain" }}
-                className="rounded-xl shadow-lg border border-gray-200"
-                unoptimized
-              />
-            </div>
-
-            <h2>Regional Analysis of Suitable Habitat</h2>
-            <p>
-              To understand the regional distribution of suitable areas across
-              different, we calculated the total area of suitable areas within
-              each Exclusive Economic Zone (EEZ) on the west coast.
+              <strong>Interpretation:</strong> This map shows that suitable
+              areas are concentrated along the coast of Southern California and
+              in Washington. Concentration is low along the coast of Northern
+              California and Oregon. The cooler waters of Oregon and Washington
+              limit suitable habitat primarily to nearshore areas where depths
+              fall within the required range.
             </p>
 
-            <h3>Calculating Suitable Area by Region</h3>
+            {/* ================= MUSSEL HABITAT ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Map of Potential Mussel Habitats
+            </h3>
+
             <p>
-              This function builds upon habitat suitability function by
+              The species of blue mussels native to the West Coast,{" "}
+              <em>Mytilus trossulus</em>, are much more cold-adapted in
+              comparison to oysters. Although estimates vary, most sources cite
+              a temperature range between -1°C and 20°C, with reduced growth and
+              survival when temperatures exceed 18°C. Blue mussels are also
+              typically found in shallower depths (0-24 meters).
+            </p>
+
+            <CodeBlock
+              code={codeBlocks[6]}
+              index={6}
+              title="Blue Mussel Habitat Analysis"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            <div className="flex justify-center">
+              <div className="my-6 w-full max-w-5xl">
+                <div className="relative h-96 w-full">
+                  <Image
+                    src="/images/mussels.png"
+                    alt="Potential Blue Mussel Aquaculture Habitat"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-contain rounded"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* ================= REGIONAL ANALYSIS ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              Regional Analysis of Suitable Habitat
+            </h2>
+
+            <p>
+              To quantify aquaculture potential by jurisdiction, we calculate
+              the total area of suitable habitat within each state&apos;s
+              Exclusive Economic Zone.
+            </p>
+
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Calculating Suitable Area by Region
+            </h3>
+
+            <p>
+              This function builds upon the habitat suitability analysis by
               calculating the total area (in square kilometers) of suitable
-              habitat within each region. In the table below.
+              habitat within each region.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[7]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[7], 7)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 7 ? "Copied!" : "Copy"}
-              </button>
-            </div>
 
-            {/* Table of Results */}
-            <div className="overflow-x-auto mb-8">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Region
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Oysters (sq km)
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Blue Mussel (sq km)
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      Central California
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">103.50</td>
-                    <td className="px-6 py-4 whitespace-nowrap">120.89</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      Northern California
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">32.67</td>
-                    <td className="px-6 py-4 whitespace-nowrap">49.51</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">Oregon</td>
-                    <td className="px-6 py-4 whitespace-nowrap">30.11</td>
-                    <td className="px-6 py-4 whitespace-nowrap">76.65</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      Southern California
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">160.53</td>
-                    <td className="px-6 py-4 whitespace-nowrap">142.52</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">Washington</td>
-                    <td className="px-6 py-4 whitespace-nowrap">131.35</td>
-                    <td className="px-6 py-4 whitespace-nowrap">290.06</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="mt-2 text-sm text-gray-500 text-center">
-                Table 1: Suitable Area For Oysters and Blue Mussels by Region
-                (in square kilometers)
-              </p>
-            </div>
+            <CodeBlock
+              code={codeBlocks[7]}
+              index={7}
+              title="Area Calculation Function"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
-            <h3>Key Findings</h3>
-            <ul className="list-disc pl-6 space-y-2">
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Table of Suitable Area by Region
+            </h3>
+
+            <CodeBlock
+              code={codeBlocks[8]}
+              index={8}
+              title="Calculate Regional Areas"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
+
+            <DataTable
+              headers={habitatSummaryData.headers}
+              rows={habitatSummaryData.rows}
+              caption="Table 1: Suitable Area For Oysters and Blue Mussels by Region"
+            />
+
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Interpretation
+            </h3>
+
+            <ol className="list-decimal pl-6 space-y-3 mb-6">
               <li>
-                Blue mussels generally have more suitable habitat across all
-                regions except Southern California, where oysters have a slight
-                advantage.
+                <strong>Washington</strong> has the most suitable habitat for
+                blue mussels (260.91 km²), which is more than double all of the
+                other regions. This is likely caused by the cold waters of the
+                state and large amount of shallow water found in regions like
+                the Puget Sound.
+              </li>
+              <li>
+                <strong>Southern California</strong> leads in oyster habitat
+                suitability (160.53 km²), likely due to their warmer waters.
+              </li>
+              <li>
+                <strong>Oregon</strong> shows a strong preference for mussels
+                over oysters (76.65 km² vs. 30.11 km²), which is expected due to
+                its cooler waters.
+              </li>
+              <li>
+                <strong>Central California</strong> shows relatively low
+                suitability for both species. It is unclear if this is caused by
+                the temperature range or a lack of shallow waters.
+              </li>
+            </ol>
+
+            {/* ================= IMPLICATIONS ================= */}
+            <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">
+              Implications for Aquaculture Development
+            </h3>
+
+            <p>
+              Although the West Coast appears to have a larger total area suited
+              to blue mussels, oyster farming currently dominates every region.
+              This mismatch between environmental suitability and current
+              industry patterns may indicate{" "}
+              <strong>untapped potential for blue mussel aquaculture</strong>,
+              particularly in Washington and Oregon where there is a
+              significantly larger area suitable for mussels than oysters.
+            </p>
+
+            {/* ================= LIMITATIONS ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              Limitations
+            </h2>
+
+            <p>
+              While this analysis provides a solid foundation for further
+              research, it has some limitations that should be addressed in
+              future research:
+            </p>
+
+            <ol className="list-decimal pl-6 space-y-3 mb-6">
+              <li>
+                <strong>Temporal Resolution</strong>: The data uses annual SST,
+                which does not account for seasonal variations in ocean
+                conditions. Locations which experience extreme seasonal
+                differences are likely to go undetected using this method, which
+                could result in false positives being introduced.
+              </li>
+              <li>
+                <strong>Environmental factors not considered</strong>: Important
+                variables such as acidity, tidal patterns, wave exposure, and El
+                Niño events were not included in the analysis.
+              </li>
+              <li>
+                <strong>Socioeconomic and Regulatory Constraints</strong>:
+                Shipping lanes, marine protected areas, and competing ocean uses
+                were not incorporated into the suitability model.
+              </li>
+            </ol>
+
+            {/* ================= FUTURE RESEARCH ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              Future Research
+            </h2>
+
+            <p>
+              In addition to addressing the above limitations, future research
+              should investigate the economic viability of establishing mussel
+              production in areas identified as suitable. Additionally, climate
+              forecasts should be included in the analysis to see if sites are
+              likely to remain suitable in the future.
+            </p>
+
+            {/* ================= REFERENCES ================= */}
+            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
+              References
+            </h2>
+
+            <ul className="list-disc pl-6 space-y-2 mb-6">
+              <li>
+                National Oceanic and Atmospheric Administration. (2023). NOAA
+                CoastWatch Pathfinder Sea Surface Temperature Dataset.{" "}
+                <a
+                  href="https://podaac.jpl.nasa.gov/dataset/AVHRR_PATHFINDER_L3_V52"
+                  className="text-teal-600 hover:text-teal-800 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://podaac.jpl.nasa.gov/dataset/AVHRR_PATHFINDER_L3_V52
+                </a>
+              </li>
+              <li>
+                National Centers for Environmental Information. (2023). Gridded
+                Bathymetry Data.{" "}
+                <a
+                  href="https://www.ncei.noaa.gov/access/gridded-bathymetry-data"
+                  className="text-teal-600 hover:text-teal-800 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://www.ncei.noaa.gov/access/gridded-bathymetry-data
+                </a>
+              </li>
+              <li>
+                NOAA Fisheries. (2023). West Coast Regional Boundaries.{" "}
+                <a
+                  href="https://www.fisheries.noaa.gov/west-coast/marine-protected-areas/west-coast-regional-boundaries"
+                  className="text-teal-600 hover:text-teal-800 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://www.fisheries.noaa.gov/west-coast/marine-protected-areas/west-coast-regional-boundaries
+                </a>
+              </li>
+              <li>
+                Food and Agriculture Organization. (2022). The State of World
+                Fisheries and Aquaculture.{" "}
+                <a
+                  href="https://www.fao.org/3/ca9229en/ca9229en.pdf"
+                  className="text-teal-600 hover:text-teal-800 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://www.fao.org/3/ca9229en/ca9229en.pdf
+                </a>
               </li>
             </ul>
-
-            <h3>Implications for Aquaculture Development</h3>
-            <p>
-              Although the West Coast appears to have a larger area suited to
-              blue mussels, oyster farming still dominates every region. That
-              mismatch may indicate that there is untapped potential for
-              shellfish farming on the west coast.
-            </p>
-
-            <h3>Limitations and Future Research</h3>
-            <p>
-              While this analysis provides a solid foundation, it has some
-              limitations that should be addressed in future research:
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>
-                The analysis uses average annual SST, which doesn&apos;t account
-                for seasonal variations that affects shellfish growth cycles.
-              </li>
-              <li>
-                Other environmental factors such as tidal patterns, wave
-                exposure, and El Nino events where not considered in the
-                analysis.
-              </li>
-              <li>
-                Socioeconomic and regulatory constraints are not incorporated
-                into the suitability model.
-              </li>
-              <li>
-                Future research could add climate change projections to assess
-                long-term viability of aquaculture sites.
-              </li>
-            </ul>
-
-            <h3>References</h3>
-            <p className="text-sm text-gray-600">
-              National Oceanic and Atmospheric Administration. (2023). NOAA
-              CoastWatch Pathfinder Sea Surface Temperature Dataset.
-              <a
-                href="https://podaac.jpl.nasa.gov/dataset/AVHRR_PATHFINDER_L3_V52"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline ml-1"
-              >
-                https://podaac.jpl.nasa.gov/dataset/AVHRR_PATHFINDER_L3_V52
-              </a>
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              National Centers for Environmental Information. (2023). Gridded
-              Bathymetry Data.
-              <a
-                href="https://www.ncei.noaa.gov/access/gridded-bathymetry-data"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline ml-1"
-              >
-                https://www.ncei.noaa.gov/access/gridded-bathymetry-data
-              </a>
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              NOAA Fisheries. (2023). West Coast Regional Boundaries.
-              <a
-                href="https://www.fisheries.noaa.gov/west-coast/marine-protected-areas/west-coast-regional-boundaries"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline ml-1"
-              >
-                https://www.fisheries.noaa.gov/west-coast/marine-protected-areas/west-coast-regional-boundaries
-              </a>
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Food and Agriculture Organization. (2022). The State of World
-              Fisheries and Aquaculture.
-              <a
-                href="https://www.fao.org/3/ca9229en/ca9229en.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline ml-1"
-              >
-                https://www.fao.org/3/ca9229en/ca9229en.pdf
-              </a>
-            </p>
           </div>
         </div>
       </div>
