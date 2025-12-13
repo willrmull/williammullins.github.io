@@ -514,7 +514,7 @@ plt.show()`,
             {/* IMAGE 2 */}
             <div className="relative w-full h-96 mt-4 mb-10">
               <Image
-                src="/images/false_col_census.png"
+                src="/images/false_col_cencus.png"
                 alt="Wildfire Boundaries on False Color Composite"
                 fill
                 style={{ objectFit: "cover" }}
