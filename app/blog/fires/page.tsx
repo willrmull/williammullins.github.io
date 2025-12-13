@@ -1,13 +1,77 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Calendar, Tag, Github } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Tag,
+  Github,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+
+interface CodeBlockProps {
+  code: string;
+  index: number;
+  title?: string;
+  expandedCode: { [key: number]: boolean };
+  copiedIndex: number | null;
+  onToggle: (index: number) => void;
+  onCopy: (text: string, index: number) => void;
+}
+
+const CodeBlock = ({
+  code,
+  index,
+  title,
+  expandedCode,
+  copiedIndex,
+  onToggle,
+  onCopy,
+}: CodeBlockProps) => {
+  const isExpanded = expandedCode[index] ?? false;
+
+  return (
+    <div className="relative mb-6">
+      <button
+        onClick={() => onToggle(index)}
+        className="w-full flex items-center justify-between bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-2 rounded-t-lg text-sm font-medium hover:from-orange-500 hover:to-red-500 transition-all"
+      >
+        <span className="flex items-center gap-2">
+          {isExpanded ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+          {title || "View Code"}
+        </span>
+        <span className="text-xs opacity-75">Python</span>
+      </button>
+      {isExpanded && (
+        <div className="relative">
+          <pre className="bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto text-sm border-l-4 border-orange-500">
+            <code>{code}</code>
+          </pre>
+          <button
+            onClick={() => onCopy(code, index)}
+            className="absolute top-2 right-2 text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition"
+          >
+            {copiedIndex === index ? "Copied!" : "Copy"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function FiresAnalysisPost() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [expandedCode, setExpandedCode] = useState<{ [key: number]: boolean }>(
+    {}
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +91,10 @@ export default function FiresAnalysisPost() {
     navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 1500);
+  };
+
+  const toggleCode = (index: number) => {
+    setExpandedCode((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
   const codeBlocks = [
@@ -128,7 +196,6 @@ census_palisades.head(5)`,
 
     `fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
 
-# UPDATE WITH YOU EJI VARIABLE FROM STEP 1
 eji_variable = 'EPL_AGE65'
 
 # Find common min/max for legend range
@@ -347,17 +414,15 @@ plt.show()`,
 
             <h2>Analysis Setup</h2>
             <h4>Loading Required Packages</h4>
-            <div className="relative mb-8">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[0]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[0], 0)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 0 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[0]}
+              index={0}
+              title="Load Required Packages"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
             <h2>False Color Image Analysis</h2>
             <p>
@@ -374,17 +439,15 @@ plt.show()`,
               xarray.open_dataset(). The coordinate reference system (CRS) is
               then restored with rioxarray.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[1]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[1], 1)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 1 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[1]}
+              index={1}
+              title="Read Landsat Satellite Data"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
             <h4>Generating the False Color Composite</h4>
             <p>
@@ -396,17 +459,15 @@ plt.show()`,
               tan. Those values are then scaled using robust scaling, which
               reduces the impact of outliers, and plotted to give the map below.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[2]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[2], 2)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 2 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[2]}
+              index={2}
+              title="Generate False Color Composite"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
             {/* IMAGE 1 */}
             <div className="relative w-full h-96 mt-4 mb-10">
               <Image
@@ -424,17 +485,15 @@ plt.show()`,
               The fire perimeter boundaries are read from GeoJSON files and
               reprojected to match the Landsat data&apos;s CRS.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[3]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[3], 3)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 3 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[3]}
+              index={3}
+              title="Load Fire Perimeter Data"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
             <h4>Overlaying Fire Perimeters on False Color Composite</h4>
             <p>
@@ -443,17 +502,15 @@ plt.show()`,
               both of the regions have significant scarring, with the color in
               the Palisades region suggesting more severe burning.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[4]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[4], 4)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 4 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[4]}
+              index={4}
+              title="Overlay Fire Perimeters on False Color Composite"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
             {/* IMAGE 2 */}
             <div className="relative w-full h-96 mt-4 mb-10">
               <Image
@@ -482,17 +539,15 @@ plt.show()`,
               the population aged 65 and older. This dataset was read in and
               reprojected to match the boundaries CRS.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[5]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[5], 5)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 5 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[5]}
+              index={5}
+              title="Load Environmental Justice Index Data"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
             <h3>Creating Census Tracts from Data</h3>
             <p>
@@ -501,34 +556,30 @@ plt.show()`,
               resulting dataset includes only those intersecting tracts, along
               with their associated demographic attributes.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[6]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[6], 6)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 6 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[6]}
+              index={6}
+              title="Create Census Tracts from Data"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
 
             <h3>Visualizing Age Demographics by Fire Region</h3>
             <p>
               The final visualization displays the census tracts affected by
               each fire, colored by their EPL_AGE65 percentile value.
             </p>
-            <div className="relative mb-6">
-              <pre className="bg-gray-100 text-gray-800 p-4 rounded-lg overflow-x-auto border-l-4 border-blue-500">
-                <code>{codeBlocks[7]}</code>
-              </pre>
-              <button
-                onClick={() => copyToClipboard(codeBlocks[7], 7)}
-                className="absolute top-2 right-2 text-xs bg-white px-2 py-1 rounded shadow hover:bg-gray-50"
-              >
-                {copiedIndex === 7 ? "Copied!" : "Copy"}
-              </button>
-            </div>
+            <CodeBlock
+              code={codeBlocks[7]}
+              index={7}
+              title="Visualize Age Demographics by Fire Region"
+              expandedCode={expandedCode}
+              copiedIndex={copiedIndex}
+              onToggle={toggleCode}
+              onCopy={copyToClipboard}
+            />
             {/* IMAGE 3 */}
             <div className="relative w-full h-96 mt-4 mb-10">
               <Image

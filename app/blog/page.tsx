@@ -38,6 +38,7 @@ export default function BlogIndex() {
                     >
                       Forecasting Water Use of Wine Grapes in California
                     </Link>
+                    x
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
                     Using a gamma model so see the imact region has on vineyard
