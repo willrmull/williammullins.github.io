@@ -36,7 +36,7 @@ export default function BlogIndex() {
                       href="/blog/vineyards"
                       className="hover:text-blue-700 transition-colors"
                     >
-                      Forecasting Water Use of Wine Grapes in California
+                      Regional Differences in Water USe in California
                     </Link>
                     x
                   </h2>

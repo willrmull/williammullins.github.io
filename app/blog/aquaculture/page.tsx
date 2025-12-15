@@ -611,7 +611,7 @@ habitat_summary`,
               <div className="my-6 w-full max-w-5xl">
                 <div className="relative h-96 w-full">
                   <Image
-                    src="/images/sst_mean.png"
+                    src="/images/mean_sst.png"
                     alt="Mean Sea Surface Temperature (2008-2012)"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
