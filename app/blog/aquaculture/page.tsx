@@ -226,16 +226,13 @@ eez_raster <- vect(here("data", "wc_regions_clean.shp"))`,
 # Convert from Kelvin to Celsius
 mean_sst <- mean_sst - 273.15
 
-# Change Margins on top and bottom
-par(oma = c(1, 0, 3, 0))
-
 # Create an informative plot of mean SST
 plot(mean_sst,
      main = "Mean Sea Surface Temperature \\n(2008-2012)",
      col = hcl.colors(40, "RdYlBu", rev = TRUE),
      xlab = "Longitude",
      ylab = "Latitude",
-     cex.main = 1.0,
+     cex.main = 0.9,
      plg = list(title = "SST (°C)"))`,
 
     // 3: Depth Data Preparation
@@ -243,13 +240,14 @@ plot(mean_sst,
 depth <- resample(depth, mean_sst, method = "near")
 
 # Crop raster to match SST
-depth_cropped <- crop(depth, mean_sst)
+depth_cropped<- crop(depth, mean_sst)
 
 # check that the depth and SST match in resolution, extent, and coordinate reference system
 compareGeom(depth_cropped, mean_sst, res = TRUE, ext = TRUE, crs = TRUE)
 
 # Verify alignment of datasets
 alignment_check <- compareGeom(depth_cropped, mean_sst, res = TRUE, ext = TRUE, crs = TRUE)
+
 
 if (!alignment_check) {
   stop(
@@ -275,9 +273,6 @@ find_suitable_habitat <- function(temp_min, temp_max, depth_min, depth_max, spec
   suitable_habitat <- as.factor(suitable_habitat)
   levels(suitable_habitat) <- c("Unsuitable", "Suitable")
   
-  # Create informative plot
-  par(oma = c(1, 1, 1.5, 1))
-  
   plot(suitable_habitat,
        col = c("#D3D3D3", "#228B22"),
        type = "classes",
@@ -287,7 +282,7 @@ find_suitable_habitat <- function(temp_min, temp_max, depth_min, depth_max, spec
        axes = TRUE,
        cex.main = 0.8,
        plg = list(x = "topright", title = "Suitability"))
-  
+
   # Return the raster
   return(suitable_habitat)
 }`,
@@ -297,8 +292,8 @@ find_suitable_habitat <- function(temp_min, temp_max, depth_min, depth_max, spec
 oyster_habitat <- find_suitable_habitat(
   temp_min = 11,
   temp_max = 30,
-  depth_min = 0,
-  depth_max = 70,
+  depth_min = -70,
+  depth_max = 0,
   species_name = "Oyster"
 )`,
 
@@ -307,13 +302,13 @@ oyster_habitat <- find_suitable_habitat(
 mussel_habitat <- find_suitable_habitat(
   temp_min = -1,
   temp_max = 20,
-  depth_min = 0,
-  depth_max = 24,
+  depth_min = -24,
+  depth_max = 0,
   species_name = "Blue Mussel"
 )`,
 
     // 7: Total Habitable Areas Function
-    `# Returns a data frame of the area suitable for a species by region
+    `# Returns a data frame of the area suitable fora species by region
 total_habitable_areas <- function(temp_min, temp_max, depth_min, depth_max, species_name){
   
   # Create suitability masks
@@ -342,16 +337,16 @@ total_habitable_areas <- function(temp_min, temp_max, depth_min, depth_max, spec
 oyster_area <- total_habitable_areas(
   temp_min = 11,
   temp_max = 30,
-  depth_min = 0,
-  depth_max = 70,
+  depth_min = -70,
+  depth_max = 0,
   species_name = "Oyster") %>% 
   rename("Oysters" = area)
 
 mussel_area <- total_habitable_areas(  
   temp_min = -1,
   temp_max = 20,
-  depth_min = 0,
-  depth_max = 24,
+  depth_min = -24,
+  depth_max = 0,
   species_name = "Blue Mussel") %>%
   rename("Blue Mussle" = area)
 
@@ -377,11 +372,11 @@ habitat_summary`,
   const habitatSummaryData = {
     headers: ["Region", "Oysters (km²)", "Blue Mussels (km²)"],
     rows: [
-      ["Central California", "103.50", "120.89"],
-      ["Northern California", "32.67", "33.36"],
-      ["Oregon", "30.11", "76.65"],
-      ["Southern California", "160.53", "124.68"],
-      ["Washington", "131.35", "260.91"],
+      ["Central California", "4940.04", "1533.94"],
+      ["Northern California", "454.30", "748.67"],
+      ["Oregon", "1578.97", "1181.82"],
+      ["Southern California", "4221.39", "1140.71"],
+      ["Washington", "3313.16", "2878.92"],
     ],
   };
 
@@ -464,24 +459,8 @@ habitat_summary`,
             <p className="text-lg font-semibold text-teal-700 mb-4">
               In this analysis, we identified areas along the west coast of the
               United States which contained suitable depth and sea surface
-              temperature (SST) for aquaculture, specifically for two species:
+              temperature (SST) for aquaculture, specifically on two species:
               oysters and blue mussels.
-            </p>
-
-            <p>
-              Marine aquaculture plays an increasingly important role in meeting
-              global seafood demand while potentially reducing pressure on wild
-              fish populations. The success of aquaculture operations depends
-              critically on environmental conditions, particularly water
-              temperature and depth, which vary substantially along the US West
-              Coast.
-            </p>
-
-            <p>
-              This analysis uses geospatial data to identify regions within the
-              Exclusive Economic Zones (EEZs) of California, Oregon, and
-              Washington that meet the environmental requirements for oyster and
-              blue mussel cultivation.
             </p>
 
             {/* ================= DATASETS ================= */}
@@ -501,9 +480,9 @@ habitat_summary`,
                     NOAA Pathfinder Sea Surface Temperature Data
                   </a>
                 </strong>
-                : Five-year average of sea surface temperature data from
-                2008-2012, providing a baseline for temperature analysis along
-                the western US coast.
+                : Data from this is used to find the five-year average of sea
+                surface temperature data from 2008-2012, providing a baseline
+                for temperature analysis along the western US coast.
               </li>
               <li>
                 <strong>
@@ -726,11 +705,10 @@ habitat_summary`,
 
             <p>
               <strong>Interpretation:</strong> This map shows that suitable
-              areas are concentrated along the coast of Southern California and
-              in Washington. Concentration is low along the coast of Northern
-              California and Oregon. The cooler waters of Oregon and Washington
-              limit suitable habitat primarily to nearshore areas where depths
-              fall within the required range.
+              areas are concentrated along the coast of Southern and Central
+              California, with a large area also being present in Washington.
+              Oregon and North California appear to have significantly smaller
+              amounts of suitable area.
             </p>
 
             {/* ================= MUSSEL HABITAT ================= */}
@@ -772,6 +750,13 @@ habitat_summary`,
               </div>
             </div>
 
+            <p>
+              <strong>Interpretation:</strong> This map shows that suitable
+              areas are primarily found within Washington, with a large cluster
+              also being present in the Bay area. Outside of that, mussels
+              appear to have a much smaller amount of suitable area in
+              comparison to Oysters overall.
+            </p>
             {/* ================= REGIONAL ANALYSIS ================= */}
             <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
               Regional Analysis of Suitable Habitat
@@ -830,24 +815,32 @@ habitat_summary`,
             <ol className="list-decimal pl-6 space-y-3 mb-6">
               <li>
                 <strong>Washington</strong> has the most suitable habitat for
-                blue mussels (260.91 km²), which is more than double all of the
-                other regions. This is likely caused by the cold waters of the
-                state and large amount of shallow water found in regions like
-                the Puget Sound.
+                blue mussels (2878.92 km²), which is more than a thousand higher
+                than the next highest region. This is likely caused by the cold
+                waters of the state and large amount of shallow water found in
+                regions like the Puget Sound.
               </li>
               <li>
-                <strong>Southern California</strong> leads in oyster habitat
-                suitability (160.53 km²), likely due to their warmer waters.
+                <strong>Central California</strong> leads in oyster habitat
+                suitability (1578.97 km²), likely due to their warmer waters. In
+                this region there is a significant disparity between suitable
+                oyster habitat and mussel habitat.
               </li>
               <li>
-                <strong>Oregon</strong> shows a strong preference for mussels
-                over oysters (76.65 km² vs. 30.11 km²), which is expected due to
-                its cooler waters.
+                <strong>Oregon</strong> shows a slight preference for mussels
+                over oysters (76.65 km² vs. 1181.82 km²), which could be caused
+                by it&apos;s slightly cooler waters or a limited amount of
+                shallow areas.
               </li>
               <li>
-                <strong>Central California</strong> shows relatively low
-                suitability for both species. It is unclear if this is caused by
-                the temperature range or a lack of shallow waters.
+                <strong>Southern California</strong> shows high suitability for
+                oysters (4221.39 km²) with below average suitability for
+                mussels.
+              </li>
+              <li>
+                <strong>Northern California</strong> seems to be rather
+                unaccommodating for both species, though mussels are somewhat
+                favored.
               </li>
             </ol>
 
@@ -857,13 +850,23 @@ habitat_summary`,
             </h3>
 
             <p>
-              Although the West Coast appears to have a larger total area suited
-              to blue mussels, oyster farming currently dominates every region.
-              This mismatch between environmental suitability and current
-              industry patterns may indicate{" "}
-              <strong>untapped potential for blue mussel aquaculture</strong>,
-              particularly in Washington and Oregon where there is a
-              significantly larger area suitable for mussels than oysters.
+              While oyster farming currently dominates all regions, the results
+              of this analysis suggest this may not entirely align with
+              maximizing the environment&apos;s potential for aquaculture.
+              Specifically, Central and Southern California&apos;s substantial
+              oyster-suitable areas (4,940 km² and 4,221 km² respectively)
+              support continued industry focus on oysters in these regions.
+              However, Northern California presents a compelling case for blue
+              mussel expansion, as mussel-suitable habitat (749 km²) actually
+              exceeds oyster-suitable area (454 km²), which is not reflected in
+              current farming practices. Additionally, Washington and Oregon
+              have much closer margins in suitable areas between the two
+              species, which could be worth investigating for aquaculture
+              diversification. Overall, more analysis should be done to
+              determine the extent to which these suitable areas overlap, and
+              whether other parameters such as local infrastructure, market
+              access, regulatory frameworks, or additional environmental factors
+              may affect habitat suitability and commercial viability.
             </p>
 
             {/* ================= LIMITATIONS ================= */}
@@ -888,7 +891,7 @@ habitat_summary`,
               <li>
                 <strong>Environmental factors not considered</strong>: Important
                 variables such as acidity, tidal patterns, wave exposure, and El
-                Niño events were not included in the analysis.
+                Nino events were not included in the analysis.
               </li>
               <li>
                 <strong>Socioeconomic and Regulatory Constraints</strong>:
@@ -899,14 +902,14 @@ habitat_summary`,
 
             {/* ================= FUTURE RESEARCH ================= */}
             <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">
-              Future Research
+              Future research
             </h2>
 
             <p>
-              In addition to addressing the above limitations, future research
+              In addition to adressing the above limitation, future research
               should investigate the economic viability of establishing mussel
               production in areas identified as suitable. Additionally, climate
-              forecasts should be included in the analysis to see if sites are
+              forecast should be included in the analysis to see if sites are
               likely to remain suitable in the future.
             </p>
 
