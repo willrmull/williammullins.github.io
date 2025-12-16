@@ -692,7 +692,7 @@ habitat_summary`,
               <div className="my-6 w-full max-w-5xl">
                 <div className="relative h-96 w-full">
                   <Image
-                    src="/images/oysters.png"
+                    src="/images/mussels_area.png"
                     alt="Potential Oyster Aquaculture Habitat"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
@@ -739,7 +739,7 @@ habitat_summary`,
               <div className="my-6 w-full max-w-5xl">
                 <div className="relative h-96 w-full">
                   <Image
-                    src="/images/mussels.png"
+                    src="/images/mussels_area.png"
                     alt="Potential Blue Mussel Aquaculture Habitat"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
