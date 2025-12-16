@@ -923,11 +923,11 @@ habitat_summary`,
               89% of California's mollusk aquaculture production derives from
               oysters. This concentration leaves the industry vulnerable to the
               region-wide stressors identified earlier: increasing ocean
-              acidification and species-specific pathogens. The identification
-              of viable mussel habitat—particularly in Washington and Northern
-              California—suggests that diversification is not only
-              environmentally feasible but may serve as a buffer against future
-              disruptions.
+              acidification and species-specific pathogens. This analysis
+              demonstrates that environmental conditions along the West Coast
+              could support greater species diversification, particularly
+              through expanded blue mussel cultivation in Washington and
+              Northern California.
             </p>
 
             {/* ================= LIMITATIONS ================= */}
