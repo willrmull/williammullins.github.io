@@ -40,8 +40,8 @@ export default function BlogIndex() {
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
-                    Using a gamma model so see the imact region has on vineyard
-                    water use
+                    Using a gamma model to examine the impact hydrologic region
+                    has on water use
                   </p>
                   <Link
                     href="/blog/vineyards"
