@@ -36,9 +36,8 @@ export default function BlogIndex() {
                       href="/blog/vineyards"
                       className="hover:text-blue-700 transition-colors"
                     >
-                      Regional Differences in Water USe in California
+                      Regional Differences in Water Use in California
                     </Link>
-                    x
                   </h2>
                   <p className="text-gray-600 mb-6 line-clamp-2">
                     Using a gamma model so see the imact region has on vineyard
