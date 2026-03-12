@@ -1,0 +1,15 @@
+[00:00:01.706] Server  LOG     ✓ Ready in 1512ms
+[00:00:08.500] Server  WARN    ⚠ Cross origin request detected from 169.231.113.106 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:00:08.531] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:39.129] Server  LOG     ✓ Compiled in 155ms
+[00:02:28.804] Server  LOG     ✓ Compiled in 129ms
+[00:02:31.991] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:45.966] Server  LOG     ✓ Compiled in 124ms
+[00:03:07.670] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:26.943] Server  WARN    Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+[00:03:40.889] Server  LOG     ✓ Compiled in 102ms
+[00:03:42.120] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:50.540] Server  LOG     ✓ Compiled in 100ms
+[00:03:51.413] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

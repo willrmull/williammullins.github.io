@@ -15,6 +15,35 @@ export default function BlogIndex() {
           </p>
 
           <div className="grid gap-8">
+            {/* Infographic Post */}
+            <article className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100">
+              <div className="md:flex">
+                <div className="p-8 md:w-2/3 flex flex-col justify-center">
+                  <div className="uppercase tracking-wide text-sm text-orange-600 font-semibold mb-2">
+                    Infographic
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                    <Link
+                      href="/blog/Infographic"
+                      className="hover:text-blue-700 transition-colors"
+                    >
+                      Crop Indemnity in Kansas
+                    </Link>
+                  </h2>
+                  <p className="text-gray-600 mb-6 line-clamp-2">
+                    A visual summary of the crop indemnity in Kansas between the years
+                    2020 and 2025.
+                  </p>
+                  <Link
+                    href="/blog/Infographic"
+                    className="inline-flex items-center font-semibold text-purple-600 hover:text-purple-800"
+                  >
+                    Read Full Post <ArrowRight className="ml-2 w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+
             {/* Project 1: The detailed post linked to a separate file */}
             <article className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100">
               <div className="md:flex">
