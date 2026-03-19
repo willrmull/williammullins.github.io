@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[47257,["/williammullins.github.io/_next/static/chunks/ff1a16fafef87110.js","/williammullins.github.io/_next/static/chunks/d8adb22655282137.js"],"ClientPageRoot"]
+3:I[79745,["/williammullins.github.io/_next/static/chunks/7f27f9630a007744.js","/williammullins.github.io/_next/static/chunks/2f7f017e55faf07c.js"],"default"]
+6:I[97367,["/williammullins.github.io/_next/static/chunks/ff1a16fafef87110.js","/williammullins.github.io/_next/static/chunks/d8adb22655282137.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"buildId":"s4hcFjUtcJ5UGwQqlEnHJ","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/williammullins.github.io/_next/static/chunks/2f7f017e55faf07c.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+4:{}
+5:{}
+8:null

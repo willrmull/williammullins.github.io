@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/blog/layout,_N_T_/blog/vineyards/layout,_N_T_/blog/vineyards/page,_N_T_/blog/vineyards"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/blog/vineyards/__PAGE__",
+    "/blog/vineyards",
+    "/blog",
+    "/_index",
+    "/_head"
+  ]
+}

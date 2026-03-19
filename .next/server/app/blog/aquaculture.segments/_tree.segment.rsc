@@ -1,0 +1,4 @@
+:HL["/williammullins.github.io/_next/static/chunks/af27dc506ad48420.css","style"]
+:HL["/williammullins.github.io/_next/static/media/03fc1b4a8d284b5e-s.p.af4fcd24.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css","style",{"crossOrigin":"anonymous","integrity":"sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"}]
+0:{"buildId":"s4hcFjUtcJ5UGwQqlEnHJ","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"blog","paramType":null,"paramKey":"blog","hasRuntimePrefetch":false,"slots":{"children":{"name":"aquaculture","paramType":null,"paramKey":"aquaculture","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

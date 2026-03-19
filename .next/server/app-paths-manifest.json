@@ -1,6 +1,11 @@
 {
+  "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
+  "/blog/Infographic/page": "app/blog/Infographic/page.js",
+  "/blog/aquaculture/page": "app/blog/aquaculture/page.js",
+  "/blog/fires/page": "app/blog/fires/page.js",
   "/blog/page": "app/blog/page.js",
-  "/blog/vineyards/page": "app/blog/vineyards/page.js"
+  "/blog/vineyards/page": "app/blog/vineyards/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
 }
